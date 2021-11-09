@@ -1,0 +1,77 @@
+.title {
+    font-size:5rem;
+    text-align: center;
+    font-weight: bold;
+    color:linen;
+    background-color: teal;
+}
+
+.text {
+    font-size: xx-large;
+    text-align: center;
+    font-weight: bold;
+    color:snow;
+}
+
+.container-login {
+    font-weight: bold;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    margin: 140px;
+    bottom: 0;
+    left: 200px;
+    width: 300px;
+    border: 5px solid gray;
+    background-color: white;
+  
+}
+
+.container-create {
+    font-weight: bold;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 5px solid gray;
+    margin: 100px;
+    bottom: 0;
+    left: 700px;
+    width: 300px;
+    background-color: white;
+    position:fixed;
+  
+}
+
+.user-home {
+    font-size: x-large;
+    font-weight: bold;  
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px;
+    color:black;
+    font-weight: bold;
+    flex-direction: column;
+    border: 5px solid gray;
+    width: auto;
+    background-color: lightgoldenrodyellow;
+    position:relative;
+}
+
+.log-out-button {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.money-card {
+    position:relative;
+    font-weight: bold;
+    padding: 30px;
+}
+
+.message {
+    font-weight: bold;
+}
+

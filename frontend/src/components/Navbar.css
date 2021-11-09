@@ -1,0 +1,45 @@
+
+.nav-link {
+    color:darkslategrey;
+    position: relative;
+}
+
+.nav-link:hover {
+    background-color: silver;
+    color: darkslategrey;
+    border-radius: 6px;
+}
+
+.active {
+    background-color: lightseagreen;
+    color: white;
+    border-radius: 6px;
+    transition:border-bottom .5s ease-in-out;
+} 
+
+.nav-link .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60%;
+}
+
+.nav-link:hover .tooltiptext {
+    visibility: visible;
+}
+
+#nav-username {
+    display: inline-block;
+    text-align: right;
+    width:100%;
+}
+
+
