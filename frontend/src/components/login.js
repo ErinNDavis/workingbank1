@@ -1,22 +1,12 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import "./home.css";
+import { DataContext } from "../App.js"
 
 async function loginUser(credentials){
-    return fetch('http://localhost:3001/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-      })
-        .then(data => data.json())
-}
-
-async function signupUser(credentials){
-  return fetch('http://localhost:3001/api/auth/signup', {
+  const result= await fetch('/api/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -24,6 +14,38 @@ async function signupUser(credentials){
       body: JSON.stringify(credentials)
     })
       .then(data => data.json())
+      .then(user => user)
+  const user = result.user;
+
+  if(result.status === 'ok') {
+    console.log('Got the token: ', result.data)
+    console.log('Got user: ', result.user)
+		alert('You have successfully logged in')
+    const token = result.data;
+    localStorage.setItem("user", JSON.stringify(result.user));
+    return token; 
+    //window.location.href = window.location + "home"
+  }
+}
+
+async function signupUser(credentials){
+  const result = await fetch('/api/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+
+  if (result.status === 'ok') {
+    alert('You have successfully created an account');
+    window.location.reload();
+    alert('Please login to your newly created account');
+  } 
+  else {
+    alert(result.error)
+  }
 }
 
 export default function Login({ setToken }) {
@@ -31,19 +53,26 @@ export default function Login({ setToken }) {
   const [password, setPassword] = useState();
   const [name, setName] = useState();
   const balance = 0;
-
+  
   const handleSubmitLogin = async e => {
     e.preventDefault();
-    loginUser({
+    console.log("clicked login in");
+    const token = await loginUser({
       email,
       password
     });
-    //setToken(token);
+
+    if (token !== undefined){
+    setToken(token);
+    console.log(token)
+    window.location.reload()
+    }
+    else alert("invalid email or password, please try again or create an account")
   }
 
   const handleSubmitSignup = async e => {
     e.preventDefault();
-    console.log("signed up");
+    console.log("clicked signed up");
     signupUser({
       name,
       email,
@@ -51,7 +80,6 @@ export default function Login({ setToken }) {
       balance
     });
   }
-  
   return (
       <Card
         bgcolor="primary"
@@ -99,9 +127,6 @@ export default function Login({ setToken }) {
                             onChange={e=> setPassword(e.target.value)}
                         />
                       </InputGroup>
-                      <Form.Text className="text-muted">
-                        Password must contain at least 8 characters.
-                      </Form.Text>
                     </Form.Group>
 
                     <Button as="input" type="submit" value="Login"/>
@@ -168,6 +193,6 @@ export default function Login({ setToken }) {
   );
 };
 
-/**Login.propTypes = {
+Login.propTypes = {
     setToken: PropTypes.func.isRequired
-};*/
+}

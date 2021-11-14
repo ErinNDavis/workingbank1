@@ -4,20 +4,40 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { DataContext } from "../App.js"
 
 function Deposit() {
+
   const [deposit, setDeposit] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const [balance, setBalance] = useState('0');
+
+  //-----------------------------------------------
+  let user = JSON.parse(window.localStorage.getItem('user'));
+    let userbalance = user.balance;
+    let email = user.email;
+    console.log(userbalance + " userbalance");
+  //-------------------------------------------------
   
   const ctx = useContext(DataContext);
-
-  let status = ctx.balance;
   
+  ctx.balance = userbalance;
+  let status = ctx.balance;
+
   const handleChange = e => {
     setIsValid(true);
     setDeposit(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  async function updateDB(credentials){
+    const result = await fetch('/api/deposit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+      .then(data => data.json())
+  }
+
+  const handleSubmit = async e => {
     
     if (deposit == 0) {
       alert("Please enter how much you would like to deposit");
@@ -25,7 +45,7 @@ function Deposit() {
       setIsValid(false);
       return;
     }
-   
+    
     ctx.updateBalance(deposit, "ADD")
     e.preventDefault();
 
@@ -34,8 +54,17 @@ function Deposit() {
 
     status = ctx.balance;
     console.log(status);
+
     alert('Deposit was a success! Account Balance is now: $' + ctx.balance);
-    
+    user['balance']=ctx.balance;
+    localStorage.setItem('user', JSON.stringify(user));
+
+    e.preventDefault();
+    console.log("balance "+ status + " email " + email);
+    updateDB({
+      email,
+      status
+    });
   };
 
   return (

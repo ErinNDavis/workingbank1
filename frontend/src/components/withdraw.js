@@ -9,8 +9,16 @@ function Withdraw() {
   const [isValid, setIsValid] = useState(false);
   const [balance, setBalance] = useState('0');
 
+  //-----------------------------------------------
+  let user = JSON.parse(window.localStorage.getItem('user'));
+  let userbalance = user.balance;
+  let email = user.email;
+  console.log(userbalance + " userbalance");
+  //-------------------------------------------------
+
   const ctx = useContext(DataContext);
 
+  ctx.balance = userbalance;
   let status = ctx.balance;
 
   const handleChange = e => {
@@ -18,7 +26,19 @@ function Withdraw() {
     setWithdrawal(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  async function updateDB(credentials){
+    const result = await fetch('/api/withdraw', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(credentials)
+    })
+      .then(data => data.json())
+  }
+
+  const handleSubmit = async e => {
+
     if (isNaN(withdrawal)) {
       alert("Please enter valid number to withdraw, cannot include non-number values.")
       setWithdrawal(0);
@@ -47,7 +67,17 @@ function Withdraw() {
       status = ctx.balance;
       console.log(status);
       alert('Your withdraw was successful. Account Balance is now: $' + ctx.balance);
-      }
+
+      user['balance']=ctx.balance;
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      e.preventDefault();
+      console.log("balance "+ status + " email " + email);
+      updateDB({
+        email,
+        status
+      });
+    }
   };
 
   return (

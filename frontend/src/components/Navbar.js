@@ -5,12 +5,14 @@ import { NavLink } from 'react-router-dom';
 
 
 const NavBar = () => {
+    const user = JSON.parse(window.localStorage.getItem('user'));
+    const username = user.name;
 
     return (
         
         <nav className="navbar bg-light">
             <div id="nav-username">
-                <h3>UserName</h3>
+                <h3>{username}</h3>
             </div>
             <div className="container-fluid">
                 <NavLink

@@ -8,9 +8,14 @@ function Logout(){
     function onSubmit(){
         console.log("logged out");
         sessionStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location.reload()
-        window.location.href = "http://localhost:3000";
+        window.location.href = "/";
      }
+
+    const user = JSON.parse(window.localStorage.getItem('user'));
+    const name = user.name;
+    const balance = user.balance;
 
     return(
         <Card bgcolor="primary" header="Deposit">
@@ -18,13 +23,10 @@ function Logout(){
             <Card.ImgOverlay>
                 <div className="user-home">
                     <Card.Text>
-                        Username: User
-                    </Card.Text>
-                    <Card.Text> 
-                        Account Type: Checking
+                        Username: {name} 
                     </Card.Text>
                     <Card.Text>
-                        Balance: $100
+                        Balance: ${balance}
                     </Card.Text>
                 </div>
                 <div className="message">
